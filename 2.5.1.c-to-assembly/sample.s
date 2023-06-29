@@ -40,7 +40,7 @@ A:
 	# ------------------- -4  -8 -12 -16 -20 -------------
 	#  xxx | retPC | FP | ? | ? | 6 | 5 | 4 | 
 	# ----------------------------------------------------
-	#             FP
+	#                FP
 
   # call B(d,e) : push params d,e in reverse order
 	subl	$8, %esp 	# create 8 bytes TEMP slots on stack
@@ -66,7 +66,7 @@ A:
 	.cfi_restore 5
 	.cfi_restore 3
 	.cfi_def_cfa 4, 4
-	ret # pop retPC from the stack top into PC
+	ret # pop retPC from the stack top into PC thus returning to caller
 	.cfi_endproc
 .LFE0:
 	.size	A, .-A
