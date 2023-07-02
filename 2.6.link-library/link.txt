@@ -1,0 +1,23 @@
+Create and use Static Link Library:
+
+- gcc -c mysum.c                  # compile mysum.c into mysum.o (object code)
+- ar rcs libmylib.a mysum.o       # create static link library with member mysum.o
+- gcc -static main.c -L. -lmylib -o main.out
+  # static compile main.c with libmylib.a as link library
+  # -L. specifies the library path (current directory)
+  # -l specifies the library (exclude prefix lib and suffix.a)
+- ./main.out                      # run output file
+
+
+Create and use Dynamic Link Library:
+
+- gcc -c -fPIC mysum.c                  # compile to Position Independent Code mysum.o
+- gcc -shared -o libmylib.so mysum.o    # create shared library libmylib.so with mysum.o
+- gcc main.c  -L. -lmylib -o main.out   # generate main.out using shared library libmylib.so
+- export LD_LIBRARY_PATH=./           
+  # LD_LIBRARY_PATH is an env var used to tell the dynamic link loader, a small program that 
+  # begins all your applications, where to look for shared libraries that an app was linked with
+  # to run main.out, must export LD_LIBRARY_PATH=./ i.e. library is in current directory
+  # could alternatively place library in standard lib directory e.g. /lib, /usr/lib and
+  # run ldconfig to configure the dynamic link library path
+- ./main.out
