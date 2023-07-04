@@ -1,0 +1,37 @@
+# Make Varaibles and Suffix Rules
+
+CC = gcc
+CFLAGS = -I.
+OBJS = main.o mysum.o
+AS = as					# for .s files in assembly
+DEPS = type.h		# list all .h files here
+
+# .s.o and .c.o are not target but directives to the make program by the suffix rule
+# these rules specify that for each .o file, there should be a corresponding .s or .c file to
+# build if their timestamps differ i.e. if the .s or .c files differ
+# build each .o file if its .s or .c file has changed
+
+.s.o: # for each filename.o, assemble filename.s into filename.o
+	$(AS) -o $< -o $@ 			# -o $@ required for .s files
+
+.c.o: # for each filename.o, compile filename.c into filename.o
+	$(CC) -c $< -o $@				# -o $@ optional for .c files
+#	the above is similar to e.g.
+# main.o: main.c
+# 	gcc -c main.c -o main.o
+
+# suffix rule
+%.o: %.c $(DEPS)			# for all .o files, recompile if its .c or .h file changed
+	$(CC) -c -o $@ $< 	# compile corresponding .c file again
+
+myprog: $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+
+# % - wildcard variable like *
+# Automatic variables are set to make after a rule is matched
+# $@ - name of current target
+# $< - name of first dependency
+# $^ - name of all dependencies
+# $* - name of current dependency without extension
+# $? - list of dependencies changed more recently than current target

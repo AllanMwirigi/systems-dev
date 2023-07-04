@@ -1,0 +1,10 @@
+# Macros in Makefile
+CC = gcc		# define CC as gcc
+CFLAGS = -Wall	# define CFLAGS as the flags to gcc
+OBJS = main.o mysum.o		# define object code files
+INCLUDE = -Ipath 			# define path as INCLUDE directory
+
+# macro defined symbols are replaced by their values by $(symbol)
+
+main.out: type.h $(OBJS)
+	$(CC) $(CFLAGS) -o main.out $(OBJS) $(INCLUDE)

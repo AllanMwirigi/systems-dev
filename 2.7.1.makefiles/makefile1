@@ -1,0 +1,4 @@
+complete1.out: type.h main.c mysum.c        # target: dependency list
+	gcc -o complete1.out main.c mysum.c				# rule: line must begin with a tab
+
+# make -f makefile1

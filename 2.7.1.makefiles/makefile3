@@ -1,0 +1,36 @@
+# Make Target by Name
+CC = gcc								# define CC as gcc
+CFLAGS = -Wall					# define CFLAGS as the flags to gcc
+OBJS = main.o mysum.o		# define object code files
+INCLUDE = -Ipath 				# define path as INCLUDE directory
+
+all: myprog install
+
+myprog: type.h $(OBJS)
+	$(CC) $(CFLAGS) -o myprog $(OBJS) $(INCLUDE)
+
+main.o: main.c type.h		# main.o depend on main.c and type.h
+	gcc -c main.c
+
+mysum.o: mysum.c type.h		# mysum.o depend on mysum.c and type.h
+	gcc -c mysum.c
+
+install: myprog		# depend on myprog; make will build myprog first
+	echo install myprog to /usr/local/bin
+	sudo mv myprog /usr/local/bin
+
+run: install		# depends on install which depends on myprog
+	echo run executable image myprog
+	myprog || /bin/true 	# no make error 10 if main returns non-zero
+
+clean:
+	rm -f *.o 2> /dev/null		# delete all .o files; "2> /dev/null" - discard any stderr
+	sudo rm -f /usr/local/bin/myprog
+
+
+# make all -f makefile3				# build all targets; myprog and install
+# make -f makefile3						# same as above; make normally tries to build first target
+# make install -f makefile3		# build target myprog and install myprog
+# make run -f makefile3				# run /usr/local/bin/myprog
+# make clean -f makefile3			# remove all listed files
+
