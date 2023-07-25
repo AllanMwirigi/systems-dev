@@ -33,6 +33,33 @@ NODE *insert(NODE *node, int key) {
   return node;
 }
 
+// Depth First Traversal
+// a stack is used for backtracking
+// can be implemented naturally by recursion or iteratively using an array as a stack
+// pre-order traversal - node, node.left, node.right
+// in-order traversal - node.left, node, node.right
+// post-order traversal - node.left, node.right, node
+void depthFirstTraversal(NODE *node) {
+  if (node == NULL) {
+    return;
+  }
+  printf("[node %d] ", node->key);
+  depthFirstTraversal(node->left);
+  depthFirstTraversal(node->right);
+}
+
+NODE *depthFirstSearch(NODE *node, int key) {
+  if (node->key == key) {
+    return node;
+  }
+  if (key < node->key) {
+    return depthFirstSearch(node->left, key);
+  }
+  if (key > node->key) {
+    return depthFirstSearch(node->right, key);
+  }
+}
+
 int main() {
   int i;
   NODE *root = NULL;
@@ -40,4 +67,9 @@ int main() {
   for (i = 1; i < N; i++) {
     insert(root, nodeValues[i]);
   }
+  printf("traversing tree: ");
+  depthFirstTraversal(root);
+  NODE *found = depthFirstSearch(root, 60);
+  printf("\ndfs found ");
+  found != NULL ? printf("[node %d]\n", found->key) : printf("[NULL]\n");
 }
